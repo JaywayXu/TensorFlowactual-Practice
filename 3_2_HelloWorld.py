@@ -19,15 +19,18 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 print(mnist.train.images.shape, mnist.train.labels.shape)
 print(mnist.test.images.shape, mnist.test.labels.shape)
 print(mnist.validation.images.shape, mnist.validation.labels.shape)
-
+"""(55000, 784) (55000, 10)
+   (10000, 784) (10000, 10)
+   (5000, 784) (5000, 10)"""
 import tensorflow as tf
 sess = tf.InteractiveSession()
 x = tf.placeholder(tf.float32, [None, 784])
-
+# 数据类型，数据的格式，none表示不限制输入数据的条目，784表示每条输入是一个784维的数据
+#
 W = tf.Variable(tf.zeros([784, 10]))
 b = tf.Variable(tf.zeros([10]))
+y = tf.nn.softmax(tf.matmul(x, W) + b)  # 关于这里二维数组和一维数组相加的事情，我还纠结了半天
 
-y = tf.nn.softmax(tf.matmul(x, W) + b)
 
 y_ = tf.placeholder(tf.float32, [None, 10])
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
